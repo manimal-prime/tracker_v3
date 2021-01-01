@@ -11,6 +11,11 @@ trait Procedureable
      */
     private function callProcedure($procedure, $data)
     {
+        // don't attempt to call stored procedure locally
+        if (app()->environment() == 'local') {
+            return collect([]);
+        }
+
         try {
             if (is_array($data)) {
                 $stringKeys = implode(',', array_map(fn($key) => ':' . $key, array_keys($data)));

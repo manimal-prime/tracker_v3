@@ -20,11 +20,6 @@ class ClanForumSession
 
     public function exists()
     {
-        if (app()->environment() === 'local') {
-            Auth::login(User::whereMemberId(273)->first());
-            return true;
-        }
-
         if (Auth::guest()) {
             $sessionData = $this->getAODSession();
 

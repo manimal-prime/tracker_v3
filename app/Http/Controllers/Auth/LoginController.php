@@ -96,12 +96,19 @@ class LoginController extends Controller
 
     private function attemptLogin($request)
     {
+
         if ($this->validatesCredentials($request)) {
             $username = str_replace('aod_', '', strtolower($request->username));
 
             if ($user = User::whereName($username)->first()) {
-                $this->checkForUpdates($user);
+
                 Auth::login($user);
+
+                if (app()->environment() === 'local') {
+                    return true;
+                }
+
+                $this->checkForUpdates($user);
 
                 (new ClanForumPermissions())->handleAccountRoles(
                     $user->member->clan_id,
