@@ -6,9 +6,9 @@
         @slot ('icon')
             @if ($division)
                 <img src="{{ getDivisionIconPath($division->abbreviation) }}"
-                     class="division-icon-large" />
+                     class="division-icon-large"/>
             @else
-                <img src="{{ asset('images/logo_v2.svg') }}" width="50px" style="opacity: .2;" />
+                <img src="{{ asset('images/logo_v2.svg') }}" width="50px" style="opacity: .2;"/>
             @endif
         @endslot
         @slot ('heading')
@@ -40,14 +40,28 @@
 
         @include ('member.partials.handles')
         @include ('member.partials.part-time-divisions')
-        @include ('member.partials.recruits')
 
         <div class="row m-t-xl">
-            <div class="col-md-12">
+            <div class="col-md-6">
                 @can('create', \App\Models\Note::class)
                     @include ('member.partials.notes')
                 @endcan
             </div>
-        </div>
+            <div class="col-md-6">
+                <h4>
+                    Rank History
+                    <span class="pull-right">
+                        <a href="{{ route('member.rank.edit', $member->getUrlParams()) }}"
+                           class="btn-add-note btn btn-default btn-sm">
+                            <i class="fa fa-user-edit text-accent"></i> Change Rank
+                        </a>
+                    </span>
+                </h4>
 
+                <hr>
+
+                @include('member.partials.rank-activity')
+            </div>
+        </div>
+    </div>
 @endsection

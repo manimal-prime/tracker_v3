@@ -1,4 +1,5 @@
 <h4 class="m-t-xl">
+    <i class="fa fa-gamepad text-info"></i>
     Ingame Handles
 
     @can ('manageIngameHandles', $member)

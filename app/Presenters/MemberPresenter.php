@@ -3,40 +3,35 @@
 namespace App\Presenters;
 
 use App\Models\Member;
-use Carbon\Carbon;
+
 class MemberPresenter extends \App\Presenters\Presenter
 {
     /**
      * @var Member
      */
     public $member;
+
     /**
      * MemberPresenter constructor.
      *
-     * @param Member $member
+     * @param  Member  $member
      */
     public function __construct(\App\Models\Member $member)
     {
         $this->member = $member;
     }
-    public function lastPromoted($emptyVal = 'Never')
-    {
-        return !$this->member->last_promoted_at ? $emptyVal ?? 'Never' : $this->member->last_promoted_at->format('Y-m-d');
-    }
+
     public function lastActive($value)
     {
         $value = $value instanceof \Carbon\Carbon ? $value : \Carbon\Carbon::parse($value);
-        if (!$value) {
-        }
-        //        if ($value->diffInDays() < 1) {
-        //            return "Today";
-        //        }
+
         return $value->diffForHumans();
     }
+
     /**
      * Returns member's name with position icon
      *
-     * @param bool $showRank
+     * @param  bool  $showRank
      * @return string
      */
     public function nameWithIcon($showRank = false)
@@ -49,6 +44,7 @@ class MemberPresenter extends \App\Presenters\Presenter
         }
         return $this->member->name;
     }
+
     /**
      * Gets member's rank and name
      *

@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\AOD\Traits\Procedureable;
+use App\Http\Requests\DeleteMember;
 use App\Models\Division;
 use App\Models\Handle;
-use App\Http\Requests\DeleteMember;
 use App\Models\Member;
 use App\Models\Platoon;
 use App\Models\Position;
+use App\Models\Rank;
 use App\Repositories\MemberRepository;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\View\Factory;
@@ -24,6 +26,8 @@ use Illuminate\View\View;
  */
 class MemberController extends Controller
 {
+    use Procedureable;
+
     /**
      * @var MemberRepository
      */
@@ -32,7 +36,7 @@ class MemberController extends Controller
     /**
      * MemberController constructor.
      *
-     * @param MemberRepository $member
+     * @param  MemberRepository  $member
      */
     public function __construct(MemberRepository $member)
     {
@@ -71,7 +75,7 @@ class MemberController extends Controller
     /**
      * Endpoint for Bootcomplete
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return mixed
      */
     public function searchAutoComplete(Request $request)
@@ -98,7 +102,7 @@ class MemberController extends Controller
     }
 
     /**
-     * @param Member $member
+     * @param  Member  $member
      * @return Collection
      */
     private function getHandles(Member $member)
@@ -114,7 +118,8 @@ class MemberController extends Controller
 
             if ($member->handles->contains($handle->id)) {
                 $newHandle['enabled'] = true;
-                $newHandle['value'] = $member->handles->filter(fn($myHandle) => $handle->type === $myHandle->type)->first()->pivot->value;
+                $newHandle['value'] = $member->handles->filter(fn($myHandle
+                ) => $handle->type === $myHandle->type)->first()->pivot->value;
             }
 
             return $newHandle;
@@ -149,8 +154,8 @@ class MemberController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Member $member
-     * @return Response
+     * @param  Member  $member
+     * @return \Illuminate\Contracts\Foundation\Application|Factory|\Illuminate\Contracts\View\View|Response
      * @internal param int $id
      */
     public function show(Member $member)
@@ -169,6 +174,9 @@ class MemberController extends Controller
 
         $member->load('recruits', 'recruits.division', 'recruits.rank');
 
+        $rankActivity = $member->rankActivity()->get();
+        $lastPromoted = $rankActivity->sortByDesc('created_at')->first()->created_at ?? 'Never';
+
         $partTimeDivisions = $member->partTimeDivisions()
             ->whereActive(true)
             ->get();
@@ -177,14 +185,16 @@ class MemberController extends Controller
             'member',
             'division',
             'notes',
-            'partTimeDivisions'
+            'partTimeDivisions',
+            'rankActivity',
+            'lastPromoted',
         ));
     }
 
     /**
      * Assigns a position to the given member
      *
-     * @param Request $request
+     * @param  Request  $request
      * @throws AuthorizationException
      */
     public function updatePosition(Request $request)
@@ -198,29 +208,24 @@ class MemberController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param Member $member
-     * @return Response
+     * @param  Member  $member
+     * @return \Illuminate\Contracts\Foundation\Application|Factory|\Illuminate\Contracts\View\View|Response
      * @throws AuthorizationException
      */
     public function edit(Member $member)
     {
         $this->authorize('update', $member);
-
         $division = $member->division;
-
         $positions = Position::all()->pluck('id', 'name');
+        $ranks = Rank::all()->pluck('id', 'name');
 
-        return view('member.edit-member', compact(
-            'member',
-            'division',
-            'positions'
-        ));
+        return view('member.edit-member', compact('member', 'division', 'positions', 'ranks'));
     }
 
     /**
      * Sync player handles
      *
-     * @param Request $request
+     * @param  Request  $request
      */
     public function updateHandles(Request $request)
     {
@@ -240,8 +245,8 @@ class MemberController extends Controller
     /**
      * Remove member from AOD
      *
-     * @param Member $member
-     * @param DeleteMember $form
+     * @param  Member  $member
+     * @param  DeleteMember  $form
      * @return Response
      */
     public function destroy(Member $member, DeleteMember $form)
@@ -288,5 +293,12 @@ class MemberController extends Controller
         $this->showToast('Member assignments reset successfully');
 
         return redirect()->route('member', $member->getUrlParams());
+    }
+
+    public function recruitingHistory($member)
+    {
+        $division = $member->division;
+
+        return view('member.recruits', compact('member', 'division'));
     }
 }
