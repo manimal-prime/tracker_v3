@@ -11,7 +11,7 @@
             <tr title="{{ $event->created_at }}">
                 <td>
                     {{ $event->user->name ?? $event->user_id }}
-                    {{ $event->name }}
+                    <span class="c-white">{{ $event->name }}</span>
                     <span class="badge">{{ $event->created_at->diffForHumans() }}</span>
                 </td>
                 <td class="text-right">{{ $event->created_at }}</td>
