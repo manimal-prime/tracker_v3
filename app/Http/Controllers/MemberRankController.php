@@ -28,16 +28,21 @@ class MemberRankController extends Controller
 
         $newRank = Rank::findOrFail(request()->rank);
 
-        $member->recordActivity('rank_' . strtolower($newRank->abbreviation), request('created_at'));
+        if (!request('historical')) {
 
-        if(!request('historical')) {
+            $results = $this->callProcedure('set_user_rank', [$member->clan_id, $newRank->name]);
 
-            if (!$this->callProcedure('set_user_rank', [$member->clan_id, $newRank->name])) {
-                return response('An error has occurred', 500);
+            if (empty($results)) {
+                $this->showErrorToast('Something went wrong. Rank could not be updated');
+                return redirect(route('member', $member->getUrlParams()));
             }
 
             $member->rank_id = $newRank->id;
             $member->save();
+        }
+
+        if (request('historical')) {
+            $member->recordActivity('rank_' . strtolower($newRank->abbreviation), request('created_at'));
         }
 
         return redirect(route('member', $member->getUrlParams()));
