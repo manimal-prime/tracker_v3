@@ -75,4 +75,5 @@ class Note extends Model
     {
         return $this->updated_at != $this->created_at;
     }
+
 }
