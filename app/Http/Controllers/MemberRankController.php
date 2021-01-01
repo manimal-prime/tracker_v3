@@ -19,7 +19,7 @@ class MemberRankController extends Controller
             'rank' => [
                 'required',
                 function ($attribute, $value, $fail) {
-                    if ($value >= auth()->user()->member->rank_id && auth()->user()->member->rank_id >= 5) {
+                    if ($value >= auth()->user()->member->rank_id && auth()->user()->member->rank_id >= 5 && !auth()->user()->isRole('admin')) {
                         $fail("You are not authorized to set that rank");
                     }
                 }
