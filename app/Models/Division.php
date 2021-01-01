@@ -187,16 +187,6 @@ class Division extends Model
     }
 
     /**
-     * Division has many activity entries
-     *
-     * @return HasMany
-     */
-    public function activity()
-    {
-        return $this->hasMany(Activity::class);
-    }
-
-    /**
      * Enabled division scope
      *
      * @param $query

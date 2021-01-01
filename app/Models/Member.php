@@ -101,6 +101,11 @@ class Member extends \Illuminate\Database\Eloquent\Model
         return $this->belongsTo(\App\Models\Position::class);
     }
 
+    public function rankActivity()
+    {
+        return $this->activity()->where('name', 'LIKE', 'rank_%');
+    }
+
     /**
      * @param $rank
      * @return Model
