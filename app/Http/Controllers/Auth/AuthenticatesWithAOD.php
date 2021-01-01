@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Models\Member;
+use App\Models\User;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Arr;
@@ -26,6 +28,10 @@ trait AuthenticatesWithAOD
      */
     private function validatesCredentials($request)
     {
+        if (app()->environment() === 'local') {
+            return true;
+        }
+
         try {
             $results = DB::connection('aod_forums')
                 ->select("CALL check_user(:username, :password)", [
