@@ -1,4 +1,5 @@
 <h4 class="m-t-xl">
+    <i class="far fa-heart text-accent"></i>
     Part-Time Divisions
     @can ('managePartTime', $member)
         <a href="{{ route('member.edit-part-time', $member->clan_id) }}"
