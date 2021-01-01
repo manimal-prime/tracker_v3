@@ -4,7 +4,7 @@
 
     @component ('application.components.division-heading')
         @slot ('icon')
-            <img src="{{ getDivisionIconPath($division->abbreviation) }}" class="division-icon-large" />
+            <img src="{{ getDivisionIconPath($division->abbreviation) }}" class="division-icon-large"/>
         @endslot
         @slot ('heading')
             {{ $division->name }} Division
@@ -119,6 +119,11 @@
                 </div>
             </div>
         </div>
+
+        <h4 class="m-t-xl">History</h4>
+        <hr>
+    @include ('activity.list')
+
 
 
 @endsection
