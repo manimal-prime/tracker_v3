@@ -46,7 +46,7 @@ elixir(function (mix) {
       'libs/dataTables/dataTables.tableTools.min.js',
     ],
 
-    'public/js/libs.js', 'resources/js');
+    'public/js/libs.js', 'resources/assets/js');
 
   mix.webpack('main.js');
   mix.webpack('platoon.js');
