@@ -2,30 +2,28 @@
 
 namespace App\Nova;
 
-use App\Nova\Filters\ByDivision;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\Date;
-use Laravel\Nova\Fields\HasMany;
-use Laravel\Nova\Fields\Number;
+use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\MorphTo;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Panel;
+use Laravel\Nova\Http\Requests\NovaRequest;
 
-class Member extends Resource
+class Activity extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\Models\Member::class;
+    public static $model = \App\Models\Activity::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
      *
      * @var string
      */
-    public static $title = 'name';
+    public static $title = 'id';
 
     /**
      * The columns that should be searched.
@@ -33,82 +31,58 @@ class Member extends Resource
      * @var array
      */
     public static $search = [
-        'clan_id',
-        'name',
-    ];
-
-    public static $with = [
-        'rank',
-        'division'
+        'name'
     ];
 
     /**
      * Get the fields displayed by the resource.
      *
-     * @param Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function fields(Request $request)
     {
         return [
-//            ID::make()->sortable(),
-
-            Number::make('Clan Id')->sortable(),
-
-            Text::make('Name'),
-
-            BelongsTo::make('Rank'),
-
-            BelongsTo::make('Division'),
-
+            ID::make(__('ID'), 'id')->sortable(),
             BelongsTo::make('User'),
-
-            Number::make('Recruiter', 'recruiter_id')->hideFromIndex(),
-
-            Date::make('Last Promoted', 'last_promoted_at'),
-
-            new Panel('SGT Info', fn () => [
-                Date::make('Last Trained', 'last_trained_at')->hideFromIndex(),
-                Number::make('Trained By', 'last_trained_by')->hideFromIndex(),
-                Date::make('XO Since', 'xo_at')->hideFromIndex(),
-                Date::make('CO Since', 'co_at')->hideFromIndex(),
-            ]),
-
-            HasMany::make('Notes'),
-
+            MorphTo::make('Subject')->types([
+                Note::class,
+                Division::class,
+                Member::class,
+//              Platoon::class,
+//              Squad::class,
+            ])->nullable(),
+            Text::make('Name'),
+            BelongsTo::make('Division'),
         ];
     }
 
     /**
      * Get the cards available for the request.
      *
-     * @param Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function cards(Request $request)
     {
-        return [
-            (new Metrics\MembersByMonth())->width('full')
-        ];
+        return [];
     }
 
     /**
      * Get the filters available for the resource.
      *
-     * @param Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function filters(Request $request)
     {
-        return [
-            new ByDivision(),
-        ];
+        return [];
     }
 
     /**
      * Get the lenses available for the resource.
      *
-     * @param Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function lenses(Request $request)
@@ -119,7 +93,7 @@ class Member extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function actions(Request $request)
