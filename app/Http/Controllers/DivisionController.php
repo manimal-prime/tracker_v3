@@ -72,7 +72,16 @@ class DivisionController extends \App\Http\Controllers\Controller
         $censuses = $division->census->sortByDesc('created_at')->take(52);
         $populations = $censuses->values()->map(fn($census, $key) => [$key, $census->count]);
         $weeklyActive = $censuses->values()->map(fn($census, $key) => [$key, $census->weekly_active_count]);
-        return view('division.modify', compact('division', 'censuses', 'weeklyActive', 'populations'));
+        $activity = $division->activity()->with([
+            'subject' => function ($query) {
+                // provide context even if a subject is "trashed"
+                $query->withTrashed();
+            }
+        ])->orderByDesc('created_at')->get();
+
+        return view('division.modify', compact(
+            'division', 'censuses', 'weeklyActive', 'populations', 'activity'
+        ));
     }
 
     /**
@@ -89,9 +98,11 @@ class DivisionController extends \App\Http\Controllers\Controller
         $form->persist();
         $this->showToast('Changes saved successfully');
         $division->recordActivity('updated_settings');
+
         if ($division->settings()->get('slack_alert_division_edited')) {
             $division->notify(new \App\Notifications\DivisionEdited($division));
         }
+
         return back();
     }
 
