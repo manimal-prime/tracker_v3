@@ -360,3 +360,23 @@ function add_query_params(array $params = [])
 
     return url()->current() . '?' . urldecode(http_build_query($query));
 }
+
+function rank_normalize($rank)
+{
+    switch (strtolower($rank)) {
+        case $rank = 'rct': return 'Recruit';
+        case $rank = 'cdt': return 'Cadet';
+        case $rank = 'pvt': return 'Private';
+        case $rank = 'pfc': return 'Private First Class';
+        case $rank = 'spec': return 'Specialist';
+        case $rank = 'tr': return 'Trainer';
+        case $rank = 'lcpl': return 'Lance Corporal';
+        case $rank = 'cpl': return 'Corporal';
+        case $rank = 'sgt': return 'Sergeant';
+        case $rank = 'ssgt': return 'Staff Sergeant';
+        case $rank = 'msgt': return 'Master Sergeant';
+        case $rank = '1stsgt': return 'First Sergeant';
+        case $rank = 'cmdsgt': return 'Command Sergeant';
+        case $rank = 'sgtmaj': return 'Sergeant Major';
+    }
+}
