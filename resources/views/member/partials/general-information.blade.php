@@ -1,45 +1,69 @@
-<h4>General Info</h4>
-<hr/>
-
 <div class="row">
 
-    @component('application.components.data-block')
-        @slot('data') {{ $member->last_activity->diffInDays() }} days @endslot
-        @slot('title')since last <span class="c-white">forum activity </span>@endslot
-        @slot('color')
-            @if($division)
-                {{ $member->last_activity->diffInDays() > $division->settings()->inactivity_days ? "panel-c-danger" : null }}
-            @endif
-        @endslot
-    @endcomponent
+    <div class="col-md-12">
+        <div class="panel panel-filled">
 
-    @component('application.components.data-block')
-        @slot('data')
-            @if ($member->isPending)
-                <span class="text-muted">UNAVAILABLE</span>
-            @elseif ($member->tsInvalid)
-                TS MISCONFIGURATION
-            @else
-                {{ Carbon::parse($member->last_ts_activity)->diffInDays() }} DAYS
-            @endif
-        @endslot
-        @slot('color')
-            {{ $member->tsInvalid ? "panel-c-danger" : null }}
-        @endslot
-        @slot('title')
-            since last <span class="c-white">TS activity </span>
-        @endslot
-    @endcomponent
+            <div class="panel-body">
 
-    @component('application.components.data-block')
-        @slot('data') {{ $member->join_date }} @endslot
-        @slot('title') Member <span class="c-white">join date</span> @endslot
-    @endcomponent
+                <div class="row">
+                    <div class="col-md-2 col-xs-6 text-center">
+                        <h2 class="no-margins">
+                            {{ $member->last_activity->diffInDays() }}
+                        </h2>
+                        <small class="text-uppercase">
+                            {{ \Str::plural('day', $member->last_activity->diffInDays()) }} since <span class="c-white">last forum activity</span>
+                        </small>
+                    </div>
 
-    @component('application.components.data-block')
-        @slot('data') {{ $member->present()->lastPromoted() }} @endslot
-        @slot('title') Last <span class="c-white">promotion date</span> @endslot
-    @endcomponent
+                    <div class="col-md-2 col-xs-6 text-center">
+                        <h2 class="no-margins">
+                            @if ($member->isPending)
+                                <span class="text-muted">UNAVAILABLE</span>
+                            @elseif ($member->tsInvalid)
+                                TS MISCONFIGURATION
+                            @else
+                                {{ Carbon::parse($member->last_ts_activity)->diffInDays() }}
+                            @endif
+                        </h2>
+                        <small class="text-uppercase">
+                            {{ \Str::plural('day', Carbon::parse($member->last_ts_activity)->diffInDays()) }}
+                            since <span class="c-white">last TS activity</span>
+                        </small>
+                    </div>
+
+                    <div class="col-md-2 col-xs-12 text-center">
+                        <h2 class="no-margins">
+                            <a href="{{ route('member.recruits', $member->getUrlParams()) }}">{{ $member->recruits->count() }}</a>
+                        </h2>
+                        <small class="text-uppercase">
+                            <span class="c-white">recruits</span>
+                        </small>
+                    </div>
+
+                    <div class="col-md-3 col-xs-12 text-center">
+                        <h2 class="no-margins">
+                            {{ $lastPromoted }}
+                        </h2>
+                        <small class="text-uppercase">
+                            last <span class="c-white">rank change</span>
+                        </small>
+                    </div>
+
+                    <div class="col-md-3 col-xs-12 text-center">
+
+                        <h2 class="no-margins">
+                            {{ $member->join_date }}
+                        </h2>
+                        <small class="text-uppercase">member <span class="c-white">join date</span></small>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
 
     @if ($member->discord)
         @component('application.components.data-block', ['isUppercase' => false])
@@ -67,7 +91,7 @@
 </div>
 
 @if ($member->rank_id >= 9)
-    <h4>Leadership Info</h4>
+    <h4><i class="fa fa-user-shield text-danger"></i> Leadership Info</h4>
     <hr/>
 
     <div class="row">
