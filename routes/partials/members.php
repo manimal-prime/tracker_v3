@@ -1,23 +1,35 @@
 <?php
 
 Route::group(['prefix' => 'members'], function () {
-    // reset assignments
-    Route::get('{member}/confirm-reset', 'MemberController@confirmUnassign')->name('member.confirm-reset');
-    Route::post('{member}/unassign', 'MemberController@unassignMember')->name('member.unassign');
-    Route::post('{member}/assign-platoon', 'MemberController@assignPlatoon')->name('member.assign-platoon');
+
     Route::post('assign-squad', 'SquadController@assignMember');
-
-    Route::get('{member}/edit-member', 'MemberController@edit')->name('editMember');
-    Route::get('{member}/edit-part-time', 'MemberController@editPartTime')->name('member.edit-part-time');
-    Route::get('{member}/edit-handles', 'MemberController@editHandles')->name('member.edit-handles');
     Route::post('search/{name}', 'MemberController@search');
-    Route::delete('{member}', 'MemberController@destroy')->name('deleteMember');
 
-    // member leave
-    Route::get('{member}/leave/{leave}/edit', 'LeaveController@edit')->name('leave.edit');
-    Route::put('{member}/leave', 'LeaveController@update')->name('leave.update');
-    Route::patch('{member}/leave', 'LeaveController@update');
-    Route::delete('{member}/leave/{leave}', 'LeaveController@delete')->name('leave.delete');
+    Route::group(['prefix' => '{member}/'], function () {
+        Route::get('confirm-reset', 'MemberController@confirmUnassign')->name('member.confirm-reset');
+        Route::post('unassign', 'MemberController@unassignMember')->name('member.unassign');
+        Route::post('assign-platoon', 'MemberController@assignPlatoon')->name('member.assign-platoon');
+
+        Route::get('recruits','MemberController@recruitingHistory')->name('member.recruits');
+
+        Route::get('edit-member', 'MemberController@edit')->name('editMember');
+        Route::get('edit-part-time', 'MemberController@editPartTime')->name('member.edit-part-time');
+        Route::get('edit-handles', 'MemberController@editHandles')->name('member.edit-handles');
+        Route::get('rank/edit', 'MemberRankController@edit')->name('member.rank.edit');
+        Route::delete('', 'MemberController@destroy')->name('deleteMember');
+
+        // ajax member updates
+        Route::post('rank', 'MemberRankController@update')->name('member.rank.update');
+        Route::post('position', 'MemberPositionController@update')->name('member.position.update');
+        Route::post('division', 'MemberDivisionController@update')->name('member.division.update');
+
+        // member leave
+        Route::get('leave/{leave}/edit', 'LeaveController@edit')->name('leave.edit');
+        Route::put('leave', 'LeaveController@update')->name('leave.update');
+        Route::patch('leave', 'LeaveController@update');
+        Route::delete('leave/{leave}', 'LeaveController@delete')->name('leave.delete');
+    });
+
 
     // member notes
     Route::group(['prefix' => '{member}/notes'], function () {
