@@ -175,7 +175,9 @@ class MemberController extends Controller
         $member->load('recruits', 'recruits.division', 'recruits.rank');
 
         $rankActivity = $member->rankActivity()->get();
-        $lastPromoted = $rankActivity->sortByDesc('created_at')->first()->created_at ?? 'Never';
+        $lastRankChange = ($rankActivity->count())
+            ? $rankActivity->sortByDesc('created_at')->first()->created_at->format('Y-m-d')
+            : 'Never';
 
         $partTimeDivisions = $member->partTimeDivisions()
             ->whereActive(true)
@@ -187,7 +189,7 @@ class MemberController extends Controller
             'notes',
             'partTimeDivisions',
             'rankActivity',
-            'lastPromoted',
+            'lastRankChange',
         ));
     }
 
