@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\AOD\Traits\Procedureable;
+use App\Http\Requests\ChangeMemberRank;
 use App\Models\Member;
 use App\Models\Rank;
 use Illuminate\Database\QueryException;
@@ -11,22 +12,8 @@ class MemberRankController extends Controller
 {
     use Procedureable;
 
-    public function update(Member $member)
+    public function update(ChangeMemberRank $form, Member $member)
     {
-        $this->authorize('update', $member);
-
-        request()->validate([
-            'created_at' => 'required',
-            'rank' => [
-                'required',
-                function ($attribute, $value, $fail) {
-                    if ($value >= auth()->user()->member->rank_id && auth()->user()->member->rank_id >= 5 && !auth()->user()->isRole('admin')) {
-                        $fail("You are not authorized to set that rank");
-                    }
-                }
-            ]
-        ]);
-
         $newRank = Rank::findOrFail(request()->rank);
 
         $member->recordActivity('rank_' . strtolower($newRank->abbreviation), request('created_at'));
@@ -42,6 +29,8 @@ class MemberRankController extends Controller
             $member->rank_id = $newRank->id;
             $member->save();
         }
+
+        $this->showToast('Rank has been updated successfully!');
 
         return redirect(route('member', $member->getUrlParams()));
     }
