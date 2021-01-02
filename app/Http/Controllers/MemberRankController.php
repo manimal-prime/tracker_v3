@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\AOD\Traits\Procedureable;
 use App\Models\Member;
 use App\Models\Rank;
+use Illuminate\Database\QueryException;
 
 class MemberRankController extends Controller
 {
@@ -32,9 +33,11 @@ class MemberRankController extends Controller
 
         if (!request('historical')) {
 
-            $results = $this->callProcedure('set_user_rank', [$member->clan_id, $newRank->name]);
-
-            \Log::info($results);
+            try {
+                \DB::connection('aod_forums')->select("CALL set_user_rank({$member->clan_id}, '{$newRank->name}')");
+            } catch (\Illuminate\Database\QueryException $e) {
+                // silence
+            }
 
             $member->rank_id = $newRank->id;
             $member->save();
