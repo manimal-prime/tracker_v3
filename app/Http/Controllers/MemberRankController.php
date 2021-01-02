@@ -15,11 +15,6 @@ class MemberRankController extends Controller
 {
     use Procedureable;
 
-    public function __construct(Member $member)
-    {
-        $this->authorize('update', $member);
-    }
-
     public function update(ChangeMemberRank $form, Member $member)
     {
         $newRank = Rank::findOrFail(request()->rank);
@@ -49,6 +44,8 @@ class MemberRankController extends Controller
      */
     public function edit(Member $member)
     {
+        $this->authorize('update', $member);
+        
         $ranks = (auth()->user()->isRole('admin'))
             ? Rank::all()
             : Rank::where('id', '<', auth()->user()->member->rank_id)->get();
