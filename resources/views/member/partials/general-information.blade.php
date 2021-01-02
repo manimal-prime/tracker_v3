@@ -42,7 +42,7 @@
 
                     <div class="col-md-3 col-xs-12 text-center">
                         <h2 class="no-margins">
-                            {{ $lastPromoted }}
+                            {{ $lastRankChange }}
                         </h2>
                         <small class="text-uppercase">
                             last <span class="c-white">rank change</span>
