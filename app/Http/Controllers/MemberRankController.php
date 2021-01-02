@@ -34,7 +34,7 @@ class MemberRankController extends Controller
         if (!request('historical')) {
 
             try {
-                \DB::connection('aod_forums')->select("CALL set_user_rank({$member->clan_id}, '{$newRank->name}')");
+                $this->callProcedure('set_user_rank', [$member->clan_id, $newRank->name]);
             } catch (\Illuminate\Database\QueryException $e) {
                 // silence
             }
