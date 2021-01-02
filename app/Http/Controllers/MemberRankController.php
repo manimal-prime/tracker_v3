@@ -6,11 +6,19 @@ use App\AOD\Traits\Procedureable;
 use App\Http\Requests\ChangeMemberRank;
 use App\Models\Member;
 use App\Models\Rank;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Database\QueryException;
 
 class MemberRankController extends Controller
 {
     use Procedureable;
+
+    public function __construct(Member $member)
+    {
+        $this->authorize('update', $member);
+    }
 
     public function update(ChangeMemberRank $form, Member $member)
     {
@@ -22,7 +30,7 @@ class MemberRankController extends Controller
 
             try {
                 $this->callProcedure('set_user_rank', [$member->clan_id, $newRank->name]);
-            } catch (\Illuminate\Database\QueryException $e) {
+            } catch (QueryException $e) {
                 // silence
             }
 
@@ -37,7 +45,7 @@ class MemberRankController extends Controller
 
     /**
      * @param  Member  $member
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @return Application|Factory|View
      */
     public function edit(Member $member)
     {
