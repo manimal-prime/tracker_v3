@@ -27,6 +27,23 @@
 
         <div class="row m-t-xl">
             <div class="col-md-12">
+                <h4>16 January 2021 - 3.40</h4>
+                <hr/>
+                <ul>
+                    <li>Rank changes on the Tracker now affect member data on both the Tracker and the Clan AOD forums <ul>
+                            <li>For members < MSGT, you may only promote up to one rank lower than your current. You can demote to any rank.</li>
+                            <li>>= MSGT may promote to any rank.</li>
+                            <li>Promoting yourself is not possible; only demoting.</li>
+                        </ul></li>
+                    <li>Updates to rank will generate an activity record, making it possible to assess the time spent between ranks</li>
+                    <li>The member profile view is being modified slightly to accommodate the new information. A temporary placeholder for divisional activity is also being added, and will begin being populated once work on that is complete.</li>
+                    <li>Position changes will be included in rank history (CO, XO, Squad Lead, Platoon Lead, etc), but this work will be done at a later date</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="row m-t-xl">
+            <div class="col-md-12">
                 <h4>4 January 2021 - 3.33</h4>
                 <hr/>
                 <ul>
