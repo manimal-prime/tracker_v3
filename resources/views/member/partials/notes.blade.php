@@ -1,6 +1,5 @@
 <h4>
     Member Notes
-
     @can('create', App\Models\Note::class)
         <span class="pull-right">
             <a href="#" class="btn-add-note btn btn-default btn-sm" data-toggle="modal"
