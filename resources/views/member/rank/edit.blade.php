@@ -71,7 +71,7 @@
                 </div>
             </div>
             <div class="col-md-6">
-                @include('member.partials.rank-activity')
+                @include('member.partials.rank-activity-table')
             </div>
 
 

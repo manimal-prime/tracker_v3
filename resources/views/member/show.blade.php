@@ -42,25 +42,14 @@
         @include ('member.partials.part-time-divisions')
 
         <div class="row m-t-xl">
+
+            <div class="col-md-6">
+                @include('member.partials.rank-activity')
+            </div>
             <div class="col-md-6">
                 @can('create', \App\Models\Note::class)
                     @include ('member.partials.notes')
                 @endcan
-            </div>
-            <div class="col-md-6">
-                <h4>
-                    Rank History
-                    <span class="pull-right">
-                        <a href="{{ route('member.rank.edit', $member->getUrlParams()) }}"
-                           class="btn-add-note btn btn-default btn-sm">
-                            <i class="fa fa-user-edit text-accent"></i> Change Rank
-                        </a>
-                    </span>
-                </h4>
-
-                <hr>
-
-                @include('member.partials.rank-activity')
             </div>
         </div>
     </div>
