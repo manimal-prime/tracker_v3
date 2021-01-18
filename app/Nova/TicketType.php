@@ -13,7 +13,7 @@ use OptimistDigital\MultiselectField\Multiselect;
 class TicketType extends Resource
 {
     public static $group = 'Maintenance';
-    
+
     /**
      * The model the resource corresponds to.
      *
@@ -64,8 +64,7 @@ class TicketType extends Resource
                     '5' => 'Administrator',
                 ])
                 ->placeholder('Specify roles') // Placeholder text
-                    ->help('Provide roles this ticket type should be available to. Leave blank if type should be available to all roles.')
-                ->saveAsJSON(),
+                    ->help('Provide roles this ticket type should be available to. Leave blank if type should be available to all roles.'),
             Textarea::make('Boilerplate')->help('Pre-populates ticket with basic information, if applicable'),
             Number::make('Display Order')->help('Change the order in which the type is displayed. (Ascending order)'),
             HasMany::make('Ticket'),
