@@ -9,6 +9,8 @@ use Laravel\Nova\Fields\ID;
 
 class StaffSergeant extends Resource
 {
+    public static $group = 'Admin';
+
     /**
      * The model the resource corresponds to.
      *

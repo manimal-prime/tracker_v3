@@ -10,6 +10,9 @@ use Laravel\Nova\Fields\Textarea;
 
 class MemberRequest extends Resource
 {
+
+    public static $group = 'Admin';
+
     /**
      * The model the resource corresponds to.
      *
