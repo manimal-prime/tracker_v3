@@ -9,6 +9,8 @@ use Laravel\Nova\Fields\Text;
 
 class Rank extends Resource
 {
+    public static $displayInNavigation = false;
+
     /**
      * The model the resource corresponds to.
      *
@@ -29,7 +31,7 @@ class Rank extends Resource
      * @var array
      */
     public static $search = [
-        'id',
+        'name',
     ];
 
     /**
