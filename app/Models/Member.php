@@ -101,9 +101,9 @@ class Member extends \Illuminate\Database\Eloquent\Model
         return $this->belongsTo(\App\Models\Position::class);
     }
 
-    public function rankActivity()
+    public function rankHistory()
     {
-        return $this->activity()->where('name', 'LIKE', 'rank_%');
+        return $this->hasMany(RankHistory::class);
     }
 
     /**
