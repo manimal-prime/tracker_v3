@@ -13,6 +13,8 @@ use OptimistDigital\MultiselectField\Multiselect;
 class TicketType extends Resource
 {
 
+    public static $group = 'Maintenance';
+    
     /**
      * The model the resource corresponds to.
      *

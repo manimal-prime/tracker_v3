@@ -5,12 +5,15 @@ namespace App\Nova;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Date;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Textarea;
 
 class Ticket extends Resource
 {
+    public static $group = 'Admin';
+
     /**
      * The model the resource corresponds to.
      *
@@ -50,6 +53,7 @@ class Ticket extends Resource
             BelongsTo::make('Owner', 'owner', '\App\Nova\User')->searchable()->nullable(),
             Textarea::make('Description'),
             Select::make('State')->options(['new' => 'New', 'assigned' => 'Assigned to admin', 'resolved' => 'Resolved']),
+            HasMany::make('Comments', 'comments', '\App\Nova\TicketComment'),
             Date::make('Created At'),
             Date::make('Updated At'),
         ];
