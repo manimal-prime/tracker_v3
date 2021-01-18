@@ -352,4 +352,9 @@ class Division extends Model
     {
         return $this->hasMany(MemberRequest::class);
     }
+
+    public function history()
+    {
+        return $this->morphMany(MemberHistory::class, 'trackable');
+    }
 }
