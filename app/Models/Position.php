@@ -8,11 +8,11 @@ class Position extends Model
 {
 
     /**
-     * relationship - position has one member
+     * relationship - position has many member
      */
-    public function member()
+    public function members()
     {
-        return $this->hasOne(Member::class);
+        return $this->hasMany(Member::class);
     }
 
     public function history()
