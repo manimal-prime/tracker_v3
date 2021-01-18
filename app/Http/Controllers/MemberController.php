@@ -174,7 +174,7 @@ class MemberController extends Controller
 
         $member->load('recruits', 'recruits.division', 'recruits.rank');
 
-        $rankActivity = $member->rankActivity()->get();
+        $rankActivity = $member->rankHistory()->get();
         $lastRankChange = ($rankActivity->count())
             ? $rankActivity->sortByDesc('created_at')->first()->created_at->format('Y-m-d')
             : 'Never';
