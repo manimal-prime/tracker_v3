@@ -3,8 +3,10 @@
 namespace App\Nova;
 
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Fields\Text;
 
 class TicketComment extends Resource
 {
@@ -41,6 +43,10 @@ class TicketComment extends Resource
     {
         return [
             ID::make(__('ID'), 'id')->sortable(),
+            Text::make('Body'),
+            BelongsTo::make('User'),
+            Date::make('Created At'),
+            Date::make('Updated At'),
         ];
     }
 

@@ -9,6 +9,8 @@ use Laravel\Nova\Fields\Text;
 
 class Role extends Resource
 {
+    public static $displayInNavigation = false;
+
     /**
      * The model the resource corresponds to.
      *
