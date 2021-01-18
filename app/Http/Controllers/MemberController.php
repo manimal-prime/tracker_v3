@@ -7,12 +7,15 @@ use App\Http\Requests\DeleteMember;
 use App\Models\Division;
 use App\Models\Handle;
 use App\Models\Member;
+use App\Models\MemberHistory;
 use App\Models\Platoon;
 use App\Models\Position;
 use App\Models\Rank;
 use App\Repositories\MemberRepository;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\View\Factory;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -174,9 +177,15 @@ class MemberController extends Controller
 
         $member->load('recruits', 'recruits.division', 'recruits.rank');
 
-        $rankActivity = $member->rankHistory()->get();
-        $lastRankChange = ($rankActivity->count())
-            ? $rankActivity->sortByDesc('created_at')->first()->created_at->format('Y-m-d')
+        $rankHistory = MemberHistory::query()
+            ->with([
+                'trackable' => function (MorphTo $morphTo) {
+                    $morphTo->morphWith([Rank::class]);
+                },
+            ])->get();
+
+        $lastRankChange = ($rankHistory->count())
+            ? $rankHistory->sortByDesc('created_at')->first()->created_at->format('Y-m-d')
             : 'Never';
 
         $partTimeDivisions = $member->partTimeDivisions()
@@ -188,7 +197,7 @@ class MemberController extends Controller
             'division',
             'notes',
             'partTimeDivisions',
-            'rankActivity',
+            'rankHistory',
             'lastRankChange',
         ));
     }

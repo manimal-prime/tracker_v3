@@ -19,8 +19,8 @@ class MemberRankController extends Controller
     {
         $newRank = Rank::findOrFail(request()->rank);
 
-        $member->rankHistory()->create([
-            'rank_id' => $newRank->id,
+        $newRank->history()->create([
+            'member_id' => $member->id,
             'admin_id' => auth()->user()->member_id
         ]);
 

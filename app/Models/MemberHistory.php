@@ -4,25 +4,22 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class RankHistory extends Model
+class MemberHistory extends Model
 {
-    protected $table = 'rank_history';
+    protected $with = ['admin'];
+
+    protected $table = 'member_history';
 
     protected $guarded = [];
-
-    protected $with = [
-        'rank',
-        'member'
-    ];
 
     public function member()
     {
         return $this->belongsTo(Member::class);
     }
 
-    public function rank()
+    public function trackable()
     {
-        return $this->belongsTo(Rank::class);
+        return $this->morphTo();
     }
 
     public function admin()

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Presenters\MemberPresenter;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -101,9 +102,9 @@ class Member extends \Illuminate\Database\Eloquent\Model
         return $this->belongsTo(\App\Models\Position::class);
     }
 
-    public function rankHistory()
+    public function history()
     {
-        return $this->hasMany(RankHistory::class);
+        return $this->morphMany(MemberHistory::class, 'trackable');
     }
 
     /**
