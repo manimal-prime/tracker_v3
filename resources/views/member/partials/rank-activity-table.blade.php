@@ -9,9 +9,9 @@
         </thead>
         @foreach ($rankActivity as $activity)
             <tr>
-                <td>{{ strtoupper(str_replace(['rank_', '_member'], '', $activity->name)) }}</td>
+                <td>{{ $activity->rank->name }}</td>
                 <td>{{ $activity->created_at->format('Y-m-d') }}</td>
-                <td>{{ $activity->user->name }}</td>
+                <td>{{ $activity->admin->name }}</td>
             </tr>
         @endforeach
     </table>
