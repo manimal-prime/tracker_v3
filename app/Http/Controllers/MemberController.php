@@ -14,7 +14,6 @@ use App\Models\Rank;
 use App\Repositories\MemberRepository;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\View\Factory;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -177,15 +176,14 @@ class MemberController extends Controller
 
         $member->load('recruits', 'recruits.division', 'recruits.rank');
 
-        $rankHistory = MemberHistory::query()
-            ->with([
-                'trackable' => function (MorphTo $morphTo) {
-                    $morphTo->morphWith([Rank::class]);
-                },
-            ])->get();
+        $rankHistory = MemberHistory::query()->with([
+            'trackable' => function (MorphTo $morphTo) {
+                $morphTo->morphWith([Rank::class]);
+            },
+        ])->orderByDesc('created_at')->get();
 
         $lastRankChange = ($rankHistory->count())
-            ? $rankHistory->sortByDesc('created_at')->first()->created_at->format('Y-m-d')
+            ? $rankHistory->first()->created_at->format('Y-m-d')
             : 'Never';
 
         $partTimeDivisions = $member->partTimeDivisions()
