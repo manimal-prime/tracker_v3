@@ -44,7 +44,7 @@
         <div class="row m-t-xl">
 
             <div class="col-md-6">
-                @include('member.partials.rank-activity')
+                @include('member.partials.member-history')
             </div>
             <div class="col-md-6">
                 @can('create', \App\Models\Note::class)
