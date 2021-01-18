@@ -19,7 +19,10 @@ class MemberRankController extends Controller
     {
         $newRank = Rank::findOrFail(request()->rank);
 
-        $member->recordActivity('rank_' . strtolower($newRank->abbreviation), request('created_at'));
+        $member->rankHistory()->create([
+            'rank_id' => $newRank->id,
+            'admin_id' => auth()->user()->member_id
+        ]);
 
         if (!request('historical')) {
 
@@ -50,7 +53,7 @@ class MemberRankController extends Controller
             ? Rank::all()
             : Rank::where('id', '<', auth()->user()->member->rank_id)->get();
 
-        $rankActivity = $member->rankActivity()->get();
+        $rankActivity = $member->rankHistory()->get();
 
         $division = $member->division;
 
