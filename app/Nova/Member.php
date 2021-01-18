@@ -65,8 +65,6 @@ class Member extends Resource
 
             Number::make('Recruiter', 'recruiter_id')->hideFromIndex(),
 
-            Date::make('Last Promoted', 'last_promoted_at'),
-
             new Panel('SGT Info', fn () => [
                 Date::make('Last Trained', 'last_trained_at')->hideFromIndex(),
                 Number::make('Trained By', 'last_trained_by')->hideFromIndex(),
