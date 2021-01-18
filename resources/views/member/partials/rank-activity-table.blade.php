@@ -1,4 +1,4 @@
-@if($rankActivity->count())
+@if($rankHistory->count())
     <table class="table table-hover">
         <thead>
         <tr>
@@ -7,11 +7,11 @@
             <th>Updated By</th>
         </tr>
         </thead>
-        @foreach ($rankActivity as $activity)
+        @foreach ($rankHistory as $rank)
             <tr>
-                <td>{{ $activity->rank->name }}</td>
-                <td>{{ $activity->created_at->format('Y-m-d') }}</td>
-                <td>{{ $activity->admin->name }}</td>
+                <td>{{ $rank->trackable->name }}</td>
+                <td>{{ $rank->created_at->format('Y-m-d') }}</td>
+                <td>{{ $rank->admin->name }}</td>
             </tr>
         @endforeach
     </table>
