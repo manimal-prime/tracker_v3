@@ -10,6 +10,8 @@ use Laravel\Nova\Fields\Text;
 
 class TicketComment extends Resource
 {
+    public static $displayInNavigation = false;
+
     /**
      * The model the resource corresponds to.
      *
@@ -44,7 +46,7 @@ class TicketComment extends Resource
         return [
             ID::make(__('ID'), 'id')->sortable(),
             Text::make('Body'),
-            BelongsTo::make('User'),
+            BelongsTo::make('User')->searchable(),
             Date::make('Created At'),
             Date::make('Updated At'),
         ];

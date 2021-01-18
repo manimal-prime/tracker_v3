@@ -14,6 +14,9 @@ use Laravel\Nova\Panel;
 
 class Division extends Resource
 {
+
+    public static $group = 'Maintenance';
+
     /**
      * The model the resource corresponds to.
      *
