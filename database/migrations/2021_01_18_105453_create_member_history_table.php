@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRankHistoryTable extends Migration
+class CreateMemberHistoryTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class CreateRankHistoryTable extends Migration
      */
     public function up()
     {
-        Schema::create('rank_history', function (Blueprint $table) {
+        Schema::create('member_history', function (Blueprint $table) {
             $table->id();
             $table->integer('member_id');
-            $table->integer('rank_id');
+            $table->integer('trackable_id');
+            $table->string('trackable_type');
             $table->integer('admin_id');
             $table->timestamps();
         });
@@ -29,6 +30,6 @@ class CreateRankHistoryTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('rank_history');
+        Schema::dropIfExists('member_history');
     }
 }

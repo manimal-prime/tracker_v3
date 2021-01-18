@@ -14,4 +14,9 @@ class Position extends Model
     {
         return $this->hasOne(Member::class);
     }
+
+    public function history()
+    {
+        return $this->morphMany(MemberHistory::class, 'trackable');
+    }
 }
