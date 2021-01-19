@@ -186,6 +186,10 @@ class MemberController extends Controller
             ? $rankHistory->first()->created_at->format('Y-m-d')
             : 'Never';
 
+        $ranks = (auth()->user()->isRole('admin'))
+            ? Rank::all()
+            : Rank::where('id', '<', auth()->user()->member->rank_id)->get();
+
         $partTimeDivisions = $member->partTimeDivisions()
             ->whereActive(true)
             ->get();
@@ -197,6 +201,7 @@ class MemberController extends Controller
             'partTimeDivisions',
             'rankHistory',
             'lastRankChange',
+            'ranks'
         ));
     }
 

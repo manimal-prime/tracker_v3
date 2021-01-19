@@ -1,6 +1,9 @@
+<h4>Member History</h4>
+<hr>
 <div class="tabs-container">
     <ul class="nav nav-tabs">
-        <li class="active"><a class="nav-link active" data-toggle="tab" href="#rank-tab" aria-expanded="true">Rank</a></li>
+        <li class="active"><a class="nav-link active" data-toggle="tab" href="#rank-tab" aria-expanded="true">Rank</a>
+        </li>
         <li><a class="nav-link" data-toggle="tab" href="#position-tab" aria-expanded="false">Position</a></li>
         <li><a class="nav-link" data-toggle="tab" href="#division-tab" aria-expanded="false">Division</a></li>
     </ul>

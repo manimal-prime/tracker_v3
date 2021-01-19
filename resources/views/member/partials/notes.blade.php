@@ -1,14 +1,13 @@
 <h4>
-    Member Notes
+    Notes
     @can('create', App\Models\Note::class)
         <span class="pull-right">
             <a href="#" class="btn-add-note btn btn-default btn-sm" data-toggle="modal"
-               data-target="#create-member-note"><i class="fa fa-comment text-accent"></i> Add note</a>
+               data-target="#note-form"><i class="fa fa-comment text-accent"></i> Add note</a>
         </span>
     @endcan
-
 </h4>
-<hr />
+<hr/>
 @if (count($notes))
     <div class="v-timeline">
         @foreach ($notes as $note)
@@ -24,8 +23,8 @@
 @endif
 
 
-@can ('create', App\Models\Note::class)
-    <div class="modal fade" id="create-member-note">
+@can('create', App\Models\Note::class)
+    <div class="modal fade" id="note-form">
         <div class="modal-dialog" role="document" style="background-color: #000;">
             {!! Form::model(App\Models\Note::class, ['method' => 'post', 'route' => ['storeNote', $member->clan_id]]) !!}
             @include('member.forms.note-form', ['action' => 'Add Member Note', 'create' => true])
@@ -34,7 +33,16 @@
     </div>
 @endcan
 
-@if ($errors->count())
-    <script>$('#create-member-note').modal();</script>
+@can('update', $member)
+    <div class="modal fade" id="rank-form">
+        <div class="modal-dialog" role="document" style="background-color: #000;">
+            @include('member.forms.rank-form')
+        </div>
+    </div>
+@endcan
+
+
+@if ($errors->has('body'))
+    <script>$('#note-form').modal();</script>
 @endif
 

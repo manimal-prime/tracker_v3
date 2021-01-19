@@ -23,7 +23,8 @@ class MemberRankController extends Controller
 
         $newRank->history()->create([
             'member_id' => $member->id,
-            'admin_id' => auth()->user()->member_id
+            'admin_id' => auth()->user()->member_id,
+            'created_at' => request()->created_at,
         ]);
 
         if (!request('historical')) {
@@ -41,29 +42,5 @@ class MemberRankController extends Controller
         $this->showToast('Rank has been updated successfully!');
 
         return redirect(route('member', $member->getUrlParams()));
-    }
-
-    /**
-     * @param  Member  $member
-     * @return Application|Factory|View
-     */
-    public function edit(Member $member)
-    {
-        $this->authorize('update', $member);
-
-        $ranks = (auth()->user()->isRole('admin'))
-            ? Rank::all()
-            : Rank::where('id', '<', auth()->user()->member->rank_id)->get();
-
-        $rankHistory = MemberHistory::query()
-            ->with([
-                'trackable' => function (MorphTo $morphTo) {
-                    $morphTo->morphWith([Rank::class]);
-                },
-            ])->get();
-
-        $division = $member->division;
-
-        return view('member.rank.edit', compact('ranks', 'member', 'division', 'rankHistory'));
     }
 }
