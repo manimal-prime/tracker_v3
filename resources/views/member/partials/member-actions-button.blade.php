@@ -6,7 +6,7 @@
 
         @can('update', $member)
             <li>
-                <a href="{{ route('editMember', $member->clan_id) }}"> Edit member</a>
+                <a href="{{ route('removeMember', $member->clan_id) }}"> Remove member</a>
             </li>
 
             @can('train', auth()->user())
