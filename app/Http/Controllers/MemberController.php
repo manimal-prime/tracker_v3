@@ -176,7 +176,7 @@ class MemberController extends Controller
 
         $member->load('recruits', 'recruits.division', 'recruits.rank');
 
-        $rankHistory = MemberHistory::query()->with([
+        $rankHistory = MemberHistory::where('member_id', $member->id)->with([
             'trackable' => function (MorphTo $morphTo) {
                 $morphTo->morphWith([Rank::class]);
             },
@@ -226,14 +226,12 @@ class MemberController extends Controller
      * @return \Illuminate\Contracts\Foundation\Application|Factory|\Illuminate\Contracts\View\View|Response
      * @throws AuthorizationException
      */
-    public function edit(Member $member)
+    public function remove(Member $member)
     {
-        $this->authorize('update', $member);
+        $this->authorize('delete', $member);
         $division = $member->division;
-        $positions = Position::all()->pluck('id', 'name');
-        $ranks = Rank::all()->pluck('id', 'name');
 
-        return view('member.edit-member', compact('member', 'division', 'positions', 'ranks'));
+        return view('member.remove-member', compact('member', 'division'));
     }
 
     /**
