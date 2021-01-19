@@ -12,10 +12,9 @@ Route::group(['prefix' => 'members'], function () {
 
         Route::get('recruits','MemberController@recruitingHistory')->name('member.recruits');
 
-        Route::get('edit-member', 'MemberController@edit')->name('editMember');
+        Route::get('remove-member', 'MemberController@remove')->name('removeMember');
         Route::get('edit-part-time', 'MemberController@editPartTime')->name('member.edit-part-time');
         Route::get('edit-handles', 'MemberController@editHandles')->name('member.edit-handles');
-        Route::get('rank/edit', 'MemberRankController@edit')->name('member.rank.edit');
         Route::delete('', 'MemberController@destroy')->name('deleteMember');
 
         // ajax member updates
