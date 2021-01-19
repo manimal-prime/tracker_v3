@@ -32,10 +32,10 @@
                 <ul>
                     <li>Rank changes on the Tracker now affect member data on both the Tracker and the Clan AOD forums
                         <ul>
-                            <li>For members < MSGT, you may only promote up to one rank lower than your current. You can
+                            <li>SGT, SSGT may only promote up to one rank lower than your current. You can
                                 demote to any rank.
                             </li>
-                            <li>>= MSGT may promote to any rank.</li>
+                            <li>MSGT+ may promote to any rank.</li>
                             <li>Promoting yourself is not possible; only demoting.</li>
                         </ul>
                     </li>
