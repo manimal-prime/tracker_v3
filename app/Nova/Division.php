@@ -59,6 +59,7 @@ class Division extends Resource
                 ->help('Should match Clan AOD division name'),
 
             Text::make('Abbreviation')
+                ->rules('unique:divisions,abbreviation')
                 ->help('Should match Clan AOD abbreviation. LOWER-CASE'),
 
             Number::make('officer_role_id')
