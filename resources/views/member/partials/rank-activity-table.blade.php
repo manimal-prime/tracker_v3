@@ -22,8 +22,32 @@
 
 @can('update', $member)
     <hr>
-    <p>
-        <a href="#" class="btn-add-note btn btn-default" data-toggle="modal"
-           data-target="#rank-form">Update Rank</a>
-    </p>
+
+    <div class="dropdown" style="display: inline-block;">
+        <button class="btn btn-default dropdown-toggle" type="button" id="tools" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="true">
+            <i class="fa fa-wrench text-accent"></i> Update rank
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="tools">
+
+
+            <li>
+                <a href="http://127.0.0.1:44678/divisions/sot/part-timers">
+                    <i class="fa fa-plus text-success"></i> Promote
+                </a>
+            </li>
+
+            <li>
+                <a href="http://127.0.0.1:44678/divisions/sot/structure">
+                    <i class="fa fa-minus text-danger"></i> Demote
+                </a>
+            </li>
+            <li role="separator" class="divider"></li>
+            <li>
+                <a href="#" data-toggle="modal" data-target="#rank-form">Custom <i
+                        class="fa fa-ellipsis-h"></i></a>
+            </li>
+        </ul>
+    </div>
 @endcan
