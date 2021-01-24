@@ -35,6 +35,11 @@ class MemberRankController extends Controller
                 // silence
             }
 
+            // is this a promotion?
+            if ($member->rank_id < $newRank->id) {
+                $member->last_promoted_at = now();
+            }
+
             $member->rank_id = $newRank->id;
             $member->save();
         }
