@@ -191,6 +191,17 @@ export default {
 
       this.$validator.validateAll().then((result) => {
 
+        console.log(this.isPriorMember() === 1);
+        return;
+
+        if (this.isPriorMember() === 1) {
+          if (confirm("This appears to be a returning AOD member. Skip the recruitment process?")) {
+            store.currentStep = 'step-three';
+            store.progress = 75;
+            return;
+          }
+        }
+
         if (!result || this.$validator.errors.any()) {
           toastr.error('Something is wrong with your member information', 'Error');
           return false;
@@ -260,6 +271,12 @@ export default {
         }
 
         store.validating = true;
+
+
+        store.verifiedEmail = true;
+        return true;
+
+
         axios.post(window.Laravel.appPath + '/validate-id/' + store.member_id)
             .then((response) => {
               if (!response.data.is_member) {
@@ -312,6 +329,13 @@ export default {
         toastr.success('Demo mode enabled!', 'Success!');
       }
     },
+
+    isPriorMember() {
+      axios.post(window.Laravel.appPath + '/prior-member/' + store.member_id)
+          .then((response) => {
+            return (response.data.data.isPriorMember);
+          });
+    }
   },
 
   components: {

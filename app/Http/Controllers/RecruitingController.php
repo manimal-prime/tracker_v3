@@ -260,4 +260,13 @@ class RecruitingController extends \App\Http\Controllers\Controller
     {
         return ['data' => ['platoons' => $division->platoons->pluck('name', 'id'), 'settings' => $division->settings]];
     }
+
+    public function isPriorMember($member_id)
+    {
+        $existingMember = \App\Models\Member::whereClanId($member_id)
+            ->where('division_id', 0)
+            ->count();
+
+        return ['data' => ['isPriorMember' => $existingMember]];
+    }
 }
