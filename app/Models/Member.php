@@ -32,20 +32,18 @@ class Member extends \Illuminate\Database\Eloquent\Model
     protected $casts = [
         'pending_member' => 'boolean',
         'flagged_for_inactivity' => 'boolean',
+        'join_date' => 'datetime',
+        'last_activity' => 'datetime',
+        'last_ts_activity' => 'datetime',
+        'last_promoted_at' => 'datetime',
+
+        // sgt info
+        'last_trained_at' => 'datetime',
+        'xo_at' => 'datetime',
+        'co_at' => 'datetime',
     ];
 
     protected $guarded = [];
-
-    protected $dates = [
-        'join_date',
-        'last_activity',
-        'last_ts_activity',
-        'last_promoted_at',
-        // sgt info
-        'last_trained_at',
-        'xo_at',
-        'co_at',
-    ];
 
     public function present(): MemberPresenter
     {
