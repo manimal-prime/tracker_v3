@@ -1,10 +1,8 @@
-let Tracker = Tracker || {};
+var Tracker = Tracker || {};
 
 (function ($) {
 
-    Tracker = {
-
-        Setup: function () {
+    Tracker = {Setup: function () {
             Tracker.GeneralInit();
             Tracker.SearchMembers();
             Tracker.SearchCollection();
@@ -13,20 +11,27 @@ let Tracker = Tracker || {};
             Tracker.InitRepeater();
             Tracker.InitTabActivate();
             Tracker.ResetLocality();
-        },
-        /**
+        }, /**
          * Handle member search
          * @constructor
          */
         SearchMembers: function () {
-            this.TriggerFilter(document.getElementById('member-search'), this.GetSearchResults, 1000);
+            this.TriggerFilter(document.getElementById('member-search'), this.GetSearchResults, 500);
+
+            $("#search_type").change(function () {
+                Tracker.GetSearchResults();
+                if (this.value === 'handle') {
+                    $("#member-search").attr("placeholder", "Search for an ingame name...");
+                } else {
+                    $("#member-search").attr("placeholder", "Search for a player...");
+                }
+            });
             $('#searchclear').click(function () {
                 $('section.search-results').addClass('closed').removeClass('open');
                 $('#member-search').val('');
                 $('#searchclear').css('display', 'none');
             });
-        },
-        /**
+        }, /**
          * Handle repeater fields
          *
          * @constructor
@@ -35,8 +40,7 @@ let Tracker = Tracker || {};
             $('.repeater').repeater({
                 isFirstItemUndeletable: true,
             });
-        },
-        /**
+        }, /**
          * Handle tab activation on URL navigation
          *
          * @constructor
@@ -48,9 +52,7 @@ let Tracker = Tracker || {};
             $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
                 $.sparkline_display_visible();
             });
-        },
-
-        /**
+        }, /**
          * Textarea event listener
          *
          * @param textArea
@@ -73,9 +75,7 @@ let Tracker = Tracker || {};
                 };
                 textArea = null;
             }
-        },
-
-        /**
+        }, /**
          * Search members handle
          *
          * @constructor
@@ -83,10 +83,11 @@ let Tracker = Tracker || {};
         GetSearchResults: function () {
             if ($('#member-search').val()) {
                 var name = $('input#member-search').val(),
+                    search_type =  $('select#search_type').val(),
                     base_url = window.Laravel.appPath;
 
                 $.ajax({
-                    url: base_url + '/search/members/' + name,
+                    url: `${base_url}/search/${search_type}/${name}`,
                     type: 'GET',
                     success: function (response) {
                         window.scrollTo(0, 0);
@@ -97,9 +98,7 @@ let Tracker = Tracker || {};
                     }
                 });
             }
-        },
-
-        /**
+        }, /**
          * Format a human readable number
          *
          * @param num
@@ -108,9 +107,7 @@ let Tracker = Tracker || {};
          */
         FormatNumber: function (num) {
             return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
-        },
-
-        /**
+        }, /**
          * Filter a collection of items
          *
          * @constructor
@@ -127,9 +124,7 @@ let Tracker = Tracker || {};
 
                 });
             });
-        },
-
-        ResetLocality: function () {
+        }, ResetLocality: function () {
             $('[data-reset-locality]').click(function () {
                 $('[data-locality-entry]').each(function () {
 
@@ -142,9 +137,7 @@ let Tracker = Tracker || {};
                     }
                 });
             });
-        },
-
-        smoothScroll: function () {
+        }, smoothScroll: function () {
             $('.smooth-scroll').click(function (e) {
                 e.preventDefault();
                 var targetId = $(this).attr('href');
@@ -153,9 +146,7 @@ let Tracker = Tracker || {};
                 window.location.hash = $.attr(this, 'href').substr(1);
             });
 
-        },
-
-        /**
+        }, /**
          * Window opener
          *
          * @param url
@@ -170,9 +161,7 @@ let Tracker = Tracker || {};
             }
 
             popupWin.focus();
-        },
-
-        GeneralInit: function () {
+        }, GeneralInit: function () {
 
             $('.approve-request').click(function (e) {
                 let settings = 'width=900,height=600,scrollbars=yes';
@@ -338,9 +327,7 @@ let Tracker = Tracker || {};
                 dataParams: {_token: $('meta[name=csrf-token]').attr('content')}
             });
 
-        },
-
-    };
+        },};
 
 })(jQuery);
 

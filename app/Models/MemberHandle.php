@@ -15,4 +15,21 @@ class MemberHandle extends Model
     {
         return $this->belongsTo(Member::class);
     }
+
+    public function handle()
+    {
+        return $this->belongsTo(Handle::class);
+    }
+
+    public function division()
+    {
+        return $this->hasOneThrough(
+            Division::class,
+            Member::class,
+            'id',
+            'id',
+            'member_id',
+            'division_id'
+        );
+    }
 }

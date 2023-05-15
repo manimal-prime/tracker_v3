@@ -3,7 +3,7 @@
 /**
  * ajax endpoints.
  */
-Route::get('search/members/{name?}', 'MemberController@search')->name('memberSearch');
+Route::get('search/{type?}/{name?}', 'MemberController@search')->where('type', 'handle|username')->name('memberSearch');
 Route::get('division-platoons/{abbreviation}', 'RecruitingController@searchPlatoons')->name('divisionPlatoons');
 Route::post('validate-id/{memberId}', 'RecruitingController@validateMemberId')
     ->name('validate-id');

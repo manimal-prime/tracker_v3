@@ -6,6 +6,7 @@ use App\Http\Requests\DeleteMember;
 use App\Models\Division;
 use App\Models\Handle;
 use App\Models\Member;
+use App\Models\MemberHandle;
 use App\Models\Platoon;
 use App\Models\Position;
 use App\Repositories\MemberRepository;
@@ -45,24 +46,25 @@ class MemberController extends Controller
      *
      * @internal param $name
      */
-    public function search($name = null)
+    public function search($type = 'username', $name = null)
     {
         if (!$name) {
             $name = request()->name;
         }
 
-        if ($name) {
+        if ($type == 'handle') {
+            $members = MemberHandle::where('value', 'LIKE', "%{$name}%")
+                ->with('member','member.rank','handle')->get();
+        } else {
             $members = Member::where('name', 'LIKE', "%{$name}%")
                 ->with('rank', 'division')->get();
-        } else {
-            $members = [];
         }
 
         if (request()->ajax()) {
-            return view('member.search-ajax', compact('members'));
+            return view('member.search-ajax', compact('members', 'type'));
         }
 
-        return view('member.search', compact('members'));
+        return view('member.search', compact('members', 'type'));
     }
 
     /**
@@ -76,7 +78,7 @@ class MemberController extends Controller
 
         $members = Member::where('name', 'LIKE', "%{$query}%")->take(5)->get();
 
-        return $members->map(fn ($member) => [
+        return $members->map(fn($member) => [
             'id' => $member->clan_id,
             'label' => $member->name,
         ]);
@@ -278,7 +280,7 @@ class MemberController extends Controller
 
             if ($member->handles->contains($handle->id)) {
                 $newHandle['enabled'] = true;
-                $newHandle['value'] = $member->handles->filter(fn ($myHandle) => $handle->type === $myHandle->type)->first()->pivot->value;
+                $newHandle['value'] = $member->handles->filter(fn($myHandle) => $handle->type === $myHandle->type)->first()->pivot->value;
             }
 
             return $newHandle;

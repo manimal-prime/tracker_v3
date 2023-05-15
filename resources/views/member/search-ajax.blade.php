@@ -1,13 +1,27 @@
 @forelse($members as $member)
-    <a class="panel" href="{{ route('member', $member->getUrlParams()) }}"
-       style="padding-left: 30px; margin-bottom: 0;">
-        <div class="panel-body">
-            <h5 class="m-b-none">
-                {!! $member->present()->rankName !!}
-            </h5>
-            <small class="slight">{{ $member->division->name ?? "Ex-AOD" }} [{{ $member->clan_id }}]</small>
-        </div>
-    </a>
+    @if($type == 'username')
+        <a class="panel" href="{{ route('member', $member->getUrlParams()) }}"
+           style="padding-left: 30px; margin-bottom: 0;">
+            <div class="panel-body">
+                <h5 class="m-b-none">
+                    {!! $member->present()->rankName !!}
+                </h5>
+                <small class="slight">{{ $member->division->name ?? "Ex-AOD" }} [{{ $member->clan_id }}]</small>
+            </div>
+        </a>
+    @else
+        <a class="panel" href="{{ route('member', $member->member->getUrlParams()) }}"
+           style="padding-left: 30px; margin-bottom: 0;">
+            <div class="panel-body">
+                <h5 class="m-b-none">
+                    {{ $member->value }} <span class="text-muted text-uppercase">{{ $member->handle->label }}</span>
+                </h5>
+                <small class="slight">{{ $member->member->present()->rankName() }} [{{ $member->member->clan_id
+                }}]</small>
+
+            </div>
+        </a>
+    @endif
 @empty
     <div class="panel text-muted">
         <div class="panel-body" style="padding-top: 55px; pointer-events: none;">
@@ -15,6 +29,7 @@
         </div>
     </div>
 @endforelse
+
 
 @if (count($members))
     <div class="panel" style="padding-left: 30px; margin-bottom: 0;">
